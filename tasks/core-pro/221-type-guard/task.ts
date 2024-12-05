@@ -9,27 +9,44 @@ Twoim zadaniem jest:
   3. Zabezpiecz funkcję getNotificationText przed niewłaściwym typem powiadomienia, zwracając "Unknown notification"
 */
 
+export enum NotificationType {
+  Email = 'email',
+  SMS = 'sms',
+  System = 'system',
+}
+
 type EmailNotification = {
-  type: 'email';
+  type: NotificationType.Email;
   emailAddress: string;
   content: string;
 };
 
 type SMSNotification = {
-  type: 'sms';
+  type: NotificationType.SMS;
   phoneNumber: number;
   message: string;
 };
 
-type SystemNotification = { type: '' };
+type SystemNotification = {
+  type: NotificationType.System,
+  log: string;
+};
 
 type Notification = EmailNotification | SMSNotification | SystemNotification;
 
 // ❌ Ta funkcja wymaga poprawy:
 export function getNotificationText(notification: Notification): string {
-  if (notification.type === 'email') {
+  if (notification.type === NotificationType.Email) {
     return notification.content;
   }
 
-  return ' ';
+  if (notification.type === NotificationType.SMS) {
+    return notification.message;
+  }
+
+  if (notification.type === NotificationType.System) {
+    return notification.log;
+  }
+
+  return 'Unknown notification';
 }
