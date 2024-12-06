@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { IdentityProcessor } from './identity.ts';
+import { IdentityProcessor , type RedditIdentity, type GoogleIdentity, type AppleIdentity} from './identity.ts';
 import { join } from 'path';
 import { getCompilerDiagnostics } from '../../../utils/ts-utils.ts';
 
@@ -10,11 +10,20 @@ describe('IdentityProcessor', () => {
   });
 
   it('should find by id', () => {
-    const processor = new IdentityProcessor('reddit');
+    const processor = new IdentityProcessor<RedditIdentity>('reddit');
     const identity = processor.findById('4');
     expect(identity?.userName).toBe('Alex Smith');
-
-    const identity2 = processor.findByUserName('Kate Williams');
-    expect(identity2).toBeUndefined();
   });
+
+  it('should find by user name', () => {
+    const processor = new IdentityProcessor<AppleIdentity>('apple');
+    const identity = processor.findByUserName('Kate Williams');
+    expect(identity?.id).toBe('2');
+  })
+
+  it('should not find by user name', () => {
+    const processor = new IdentityProcessor<GoogleIdentity>('google');
+    const identity = processor.findByUserName('Jane Doe');
+    expect(identity).toBeUndefined();
+  })
 });
