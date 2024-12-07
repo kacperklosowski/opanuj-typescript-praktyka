@@ -3,18 +3,20 @@ import { getCompilerDiagnostics } from '../../../utils/ts-utils.ts';
 import { join } from 'path';
 import { InventoryStockTracker, MessageBus, OrderCancelledMessage, OrderCreatedMessage } from './task.ts';
 
-describe('Generic Message Bug', () => {
+describe('Generic Message Bus', () => {
   it('should compile', () => {
     const diagnostics = getCompilerDiagnostics(join(__dirname, './task.ts'));
     expect(diagnostics).toConfirmCompilation();
   });
 
   it('should track products in stock', () => {
-    const bus = new MessageBus();
+    const bus = MessageBus.getInstance();
+
     const stock = {
       PRD1: 10,
       PRD2: 10,
     };
+
     const tracker = new InventoryStockTracker(bus, stock);
 
     bus.publish<OrderCreatedMessage>({
