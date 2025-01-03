@@ -2,7 +2,8 @@ import { join } from 'path';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { getCompilerDiagnostics } from '../../../utils/ts-utils.ts';
 import { MockDataAccess } from './DataAccess.ts';
-import { Product, Repository, User } from './repository.ts';
+import { Repository } from './repository.ts';
+import type {Product, User} from './types.ts'
 
 describe('Data Access Layer Tests', () => {
   let dataAccess: MockDataAccess;
