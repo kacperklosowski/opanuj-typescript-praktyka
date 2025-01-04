@@ -5,7 +5,7 @@ type Person = {
 };
 
 type FieldExtender<T, K> = {
-  [P in keyof T]: {value: T[P]} & K;
+  [P in keyof T]: { value: T[P] } & K;
 };
 
 type PersonUpdateHistory = FieldExtender<
