@@ -1,9 +1,21 @@
+type Pages = 'homepage' | 'about' | 'contact';
+
 type PagesMap = {
-  homepage: string;
-  about: string;
-  contact: string;
+  [P in Pages]: string;
 };
 
-type PagesAccess = {};
+type PagesAccessMap = {
+  [P in Pages]: boolean
+};
 
-export function checkAccess(map: PagesMap): PagesAccess {}
+export function checkAccess(map: PagesMap): PagesAccessMap {
+  const pagesAccessMap = {} as PagesAccessMap;
+
+  let key: keyof PagesMap;
+
+  for (key in map) {
+    pagesAccessMap[key] = true;
+  }
+
+  return pagesAccessMap;
+}
