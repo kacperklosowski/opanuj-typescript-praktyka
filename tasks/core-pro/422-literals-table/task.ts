@@ -1,17 +1,18 @@
 import type { Entities } from './table-models.ts';
 
-type Get<Model, TableName extends Entities> = {
-  [Prop in `get${Capitalize<TableName>}`]: (id: number) => Model;
+type ModelName<T> = T extends { model: Entities } ? T['model'] : never;
+type OmitModelName<T> = Omit<T, 'model'>;
+
+type Get<Model> = {
+  [Prop in `get${Capitalize<ModelName<Model>>}`]: (id: number) => OmitModelName<Model>;
 };
 
-type Update<Model, TableName extends Entities> = {
-  [Prop in `update${Capitalize<TableName>}`]: (id: number, update: Partial<Model>) => void;
+type Update<Model> = {
+  [Prop in `update${Capitalize<ModelName<Model>>}`]: (id: number, update: Partial<Model>) => OmitModelName<Model>;
 };
 
-type Delete<Model, TableName extends Entities> = {
-  [Prop in `delete${Capitalize<TableName>}`]: (id: number) => Model;
+type Delete<Model> = {
+  [Prop in `delete${Capitalize<ModelName<Model>>}`]: (id: number) => OmitModelName<Model>;
 };
 
-export type Table<Model, TableName extends Entities> = Get<Model, TableName> &
-  Update<Model, TableName> &
-  Delete<Model, TableName>;
+export type Table<Model> = Get<Model> &  Update<Model> &  Delete<Model>;
