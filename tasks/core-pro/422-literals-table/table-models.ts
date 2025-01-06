@@ -1,5 +1,3 @@
-export type Entities = 'user' | 'product' | 'order';
-
 export interface User {
   id: number;
   name: string;

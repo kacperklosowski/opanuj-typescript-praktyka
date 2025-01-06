@@ -1,18 +1,27 @@
-import type { Entities } from './table-models.ts';
+import type { Order, Product, User } from './table-models.ts';
 
-type ModelName<T> = T extends { model: Entities } ? T['model'] : never;
-type OmitModelName<T> = Omit<T, 'model'>;
+type ModelMap = {
+  user: User;
+  product: Product;
+  order: Order;
+}
+
+type TableModels = ModelMap[keyof ModelMap];
+
+type ModelName<T> = {
+  [K in keyof ModelMap]: ModelMap[K] extends T ? K : never;
+}[keyof ModelMap];
 
 type Get<Model> = {
-  [Prop in `get${Capitalize<ModelName<Model>>}`]: (id: number) => OmitModelName<Model>;
+  [Prop in `get${Capitalize<ModelName<Model>>}`]: (id: number) => Model;
 };
 
 type Update<Model> = {
-  [Prop in `update${Capitalize<ModelName<Model>>}`]: (id: number, update: Partial<Model>) => OmitModelName<Model>;
+  [Prop in `update${Capitalize<ModelName<Model>>}`]: (id: number, update: Partial<Model>) => Model;
 };
 
 type Delete<Model> = {
-  [Prop in `delete${Capitalize<ModelName<Model>>}`]: (id: number) => OmitModelName<Model>;
+  [Prop in `delete${Capitalize<ModelName<Model>>}`]: (id: number) => Model;
 };
 
-export type Table<Model> = Get<Model> &  Update<Model> &  Delete<Model>;
+export type Table<Model extends TableModels> = Get<Model> &  Update<Model> &  Delete<Model>;
