@@ -12,12 +12,16 @@ type APIClient = {
   deleteOrder: (id: number) => void;
 };
 
-type JustGetters<T> = T;
+type Methods = 'get' | 'delete' | 'create' | 'update';
 
-type APIClientGetters = JustGetters<APIClient>;
+type FilterMethods<Type, Method extends Methods> = {
+  [Prop in keyof Type as Prop extends `${Method}${string}` ? Prop : never]: Type[Prop]
+}
 
-function deleteById(client: APIClientGetters, id: number) {
-  // @ts-expect-error
+type APIClientGetters = FilterMethods<APIClient, 'get'>;
+type APIClientRemovers = FilterMethods<APIClient, 'delete'>;
+
+function deleteById(client: APIClientRemovers, id: number) {
   client.deleteOrder(id);
 }
 
