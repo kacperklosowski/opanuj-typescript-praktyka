@@ -5,11 +5,11 @@
 */
 
 type CardProps = {
-  title: string;
-  content: string;
+  title?: string;
+  content?: string;
 };
 
-const Card = ({ title, content }) => {
+const Card = ({ title = 'Witamy w React Pro!', content = 'Ciesz się procesem nauki TSa z Reactem 🧑🏻‍💻' }: CardProps) => {
   return (
     <div className="max-w-md mx-auto overflow-hidden transition-shadow duration-300 bg-white shadow-lg rounded-xl hover:shadow-xl dark:bg-slate-800">
       <div className="p-8">
