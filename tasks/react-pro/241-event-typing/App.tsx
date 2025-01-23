@@ -1,7 +1,7 @@
 /* Dodaj odpowiednie typy do event handlera, który pozwoli na dynamiczne wnioskowanie typu eventu "onChange" na elemencie <select> */
 
 const App = () => {
-  const handleChange = (e) => {
+  const handleChange: React.ComponentProps<'select'>['onChange'] = (e) => {
     console.log('Select option changed:', e.currentTarget.value);
   };
 
