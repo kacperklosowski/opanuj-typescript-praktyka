@@ -5,9 +5,22 @@
 */
 
 import { useRef, useState } from 'react';
-import { fixedForwardRef } from './fixed-foward-ref';
+import { fixedForwardRef } from './fixed-forward-ref';
 
-const FormComponent = fixedForwardRef((props: any, ref) => {
+type UserFormData = {
+  name: string;
+  email: string;
+  age: number;
+  occupation: string;
+  bio: string;
+};
+
+type FormProps = {
+  initialData: UserFormData;
+  handleSubmit (e: React.FormEvent<HTMLFormElement>): void;
+}
+
+const FormComponent = fixedForwardRef((props: FormProps, ref: React.ForwardedRef<HTMLFormElement>) => {
   return (
     <form
       ref={ref}
@@ -101,23 +114,25 @@ const FormComponent = fixedForwardRef((props: any, ref) => {
 });
 
 const App = () => {
-  const formRef = useRef(null);
-  const [submittedData, setSubmittedData] = useState(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [submittedData, setSubmittedData] = useState<UserFormData | null>(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit: React.ComponentProps<'form'>['onSubmit'] = (e) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
     const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
       age: Number(formData.get('age')),
-      occupation: formData.get('occupation'),
-      bio: formData.get('bio'),
+      occupation: formData.get('occupation') as string,
+      bio: formData.get('bio') as string,
     };
+
     setSubmittedData(data);
   };
 
-  const initialData = {
+  const initialData: UserFormData = {
     name: '',
     email: '',
     age: 0,
