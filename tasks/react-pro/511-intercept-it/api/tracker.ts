@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export function trackSlowRequests() {
+export function trackSlowRequests(duration: number, url: string) {
   axios.post('/api/tracker', {
-    duration: 0,
-    url: '',
+    duration,
+    url,
   });
 }
